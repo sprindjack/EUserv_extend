@@ -2,9 +2,6 @@ name: 'Avoid workflow being suspended'
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
   schedule:
     - cron: '0 0 1 * *'
 
