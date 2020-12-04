@@ -35,7 +35,7 @@ jobs:
         run: python main.py
       
       - name: 'Random upload to avoid Github Workflow suspend'
-        run: echo `date +"%Y-%m-%d %H:%M:%S"` > lastruntime.txt
+        run: echo $(cat /proc/sys/kernel/random/uuid) > UUID.txt
      
       - name: Commit Files
         id: commit
