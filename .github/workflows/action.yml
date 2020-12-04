@@ -35,7 +35,7 @@ jobs:
         run: python main.py
       
       - name: 'Random upload to avoid Github Workflow suspend'
-        run: echo `date +"%Y-%m-%d %H:%M:%S"` > timenow.txt
+        run: echo `date +"%Y-%m-%d %H:%M:%S"` > lastruntime.txt
      
       - name: Commit Files
         id: commit
