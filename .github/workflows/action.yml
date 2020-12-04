@@ -6,11 +6,14 @@ on:
     branches:
       - main
   schedule:
-    - cron: '50 0 * * *'
+    - cron: '0 5 2,3,4 * *'
+  watch:
+    types: started
 
 jobs:
   auto_renew:
     runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
     steps:
       - name: 'Checkout codes'
         uses: actions/checkout@v2
@@ -30,3 +33,22 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: python main.py
+      
+      - name: 'Random upload to avoid Github Workflow suspend'
+        run: curl -o bing.html "https://www.bing.com"
+      
+      - name: Commit Files
+        id: commit
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -am 'run'
+          echo ::set-output name=status::success
+           
+      - name: GitHub Push
+        if: steps.commit.output.status != 'success'
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
