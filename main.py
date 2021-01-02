@@ -112,8 +112,8 @@ if __name__ == "__main__":
     if not USERNAME or not PASSWORD:
         print("你没有添加任何账户")
         exit(1)
-    user_list = USERNAME.split(',')
-    passwd_list = PASSWORD.split(',')
+    user_list = USERNAME.strip().split()
+    passwd_list = PASSWORD.strip().split()
     if len(user_list) != len(passwd_list):
         print("The number of usernames and passwords do not match!")
         exit(1)
@@ -130,6 +130,8 @@ if __name__ == "__main__":
             if v:
                 if not renew(sessid, s, passwd_list[i], k):
                     print("ServerID: %s Renew Error!" % k)
+                else:
+                    print("ServerID: %s has been successfully renewed!" % k)
             else:
                 print("ServerID: %s does not need to be renewed" % k)
         time.sleep(15)
